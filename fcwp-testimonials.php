@@ -18,3 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 require plugin_dir_path( __FILE__ ) . 'lib/posttype.php';
 
 // add stuff here
+
+//* Add the testimonals featured image size
+add_image_size( 'testimonial-featured', 350, 350, true ); // 350 pixels wide by 350 pixels tall, hard crop mode
