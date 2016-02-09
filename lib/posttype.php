@@ -1,7 +1,7 @@
 <?php
 //* This file add the custom post type to our testimonials plugin with a taxonomy and custom options.
 
-//* Create testimonials custom post type 
+//* Create testimonials custom post type
 add_action( 'init', 'fcwp_testimonials_post_type' );
 function fcwp_testimonials_post_type() {
     register_post_type( 'fcwp-testimonials',
@@ -103,15 +103,15 @@ function add_testimonial_metaboxes() {
 //* Add fields to slide details metabox
 function fcwp_testimonial_details() {
     global $post;
-    
+
     // Noncename needed to verify where the data originated
     echo '<input type="hidden" name="testimonialmeta_noncename" id="testimonialmeta_noncename" value="' . wp_create_nonce( plugin_basename(__FILE__) ) . '" />';
-    
+
     // Get the slide details if they have already been entered
     $testimoniallink = get_post_meta($post->ID, '_testimoniallink', true);
     $reviewertitle = get_post_meta($post->ID, '_reviewertitle', true);
     $company = get_post_meta($post->ID, '_company', true);
-    
+
     // Display the fields
     echo "<p>Enter Reviewer's Title</p>";
     echo '<input type="text" name="_reviewertitle" value="' . $reviewertitle  . '" class="widefat" />';
@@ -125,22 +125,27 @@ function fcwp_testimonial_details() {
 //* Save the metabox data when testimonial is saved
 add_action('save_post', 'fcwp_save_testimonial_meta', 1, 2);
 function fcwp_save_testimonial_meta($post_id, $post) {
-    
+
+    // Verify that we actually submitted data through a form
+    if ( !isset( $_POST['testimonialmeta_noncename'] ) || empty( $_POST['testimonialmeta_noncename'] ) ){
+	    return $post->ID;
+    }
+
     // verify this came from the our screen and with proper authorization because save_post can be triggered at other times
     if ( !wp_verify_nonce( $_POST['testimonialmeta_noncename'], plugin_basename(__FILE__) )) {
-    return $post->ID;
+    	return $post->ID;
     }
 
     // Is the user allowed to edit the post or page?
     if ( !current_user_can( 'edit_post', $post->ID ))
         return $post->ID;
 
-    // After authentication, find and save the data using an array    
+    // After authentication, find and save the data using an array
     $testimonial_meta['_testimoniallink'] = $_POST['_testimoniallink'];
     $testimonial_meta['_reviewertitle'] = $_POST['_reviewertitle'];
     $testimonial_meta['_company'] = $_POST['_company'];
-    
-    // Add values of $testimonial_meta as custom fields    
+
+    // Add values of $testimonial_meta as custom fields
     foreach ($testimonial_meta as $key => $value) { // Cycle through the $testimonial_meta array
         if( $post->post_type == 'revision' ) return; // Don't store custom data twice
         $value = implode(',', (array)$value); // If $value is an array, make it a CSV (unlikely)
