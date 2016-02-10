@@ -1,10 +1,3 @@
-<style>
-	.testimonial-citation {
-		font-weight: bold;
-		font-style: italic;
-	}
-</style>
-
 <?php the_content() ?>
 
 <p class="testimonial-citation">&mdash;<?php the_title(); ?>,

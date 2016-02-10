@@ -23,3 +23,8 @@ require plugin_dir_path( __FILE__ ) . 'lib/widget.php';
 
 //* Add the testimonals featured image size
 add_image_size( 'testimonial-featured', 350, 350, true ); // 350 pixels wide by 350 pixels tall, hard crop mode
+
+function fcwp_stylesheet() {
+    wp_enqueue_style( 'fcwp-style', plugin_dir_url( __FILE__ ) . 'style.css' );
+}
+add_action( 'wp_enqueue_scripts', 'fcwp_stylesheet' );
