@@ -4,7 +4,7 @@
 //* Create testimonials custom post type
 add_action( 'init', 'fcwp_testimonials_post_type' );
 function fcwp_testimonials_post_type() {
-    register_post_type( 'fcwp-testimonials',
+    register_post_type( 'testimonial',
         array(
             'labels' 		=> array(
                 'name' => __( 'Testimonials' ),
@@ -46,7 +46,7 @@ function fcwp_testimonials_tax() {
 		'query_var'         => true,
 		'rewrite'           => array( 'slug' => 'testimonial-categories' ),
 	);
-	register_taxonomy( 'testimonials-tax', 'fcwp-testimonials', $args);
+	register_taxonomy( 'testimonials-tax', 'testimonial', $args);
 }
 
 //* Change CPT title text
@@ -55,7 +55,7 @@ function fcwp_change_title_text( $translation ) {
     global $post;
     if( isset( $post ) ) {
         switch( $post->post_type ){
-            case 'fcwp-testimonials' :
+            case 'testimonial' :
                 if( $translation == 'Enter title here' ) return 'Enter Reviewer Name Here';
             break;
         }
@@ -92,12 +92,12 @@ function fcwp_cpt_at_glance() {
 //* Set custom icon for testimonials on dashboard
 add_action('admin_head', 'fcwp_dashboard_cpts_css');
 function fcwp_dashboard_cpts_css() {
-       echo '<style type="text/css">#dashboard_right_now .fcwp-testimonials-count a:before, #dashboard_right_now .fcwp-testimonials-count span:before { content: "\f473" !important; } </style>';
+       echo '<style type="text/css">#dashboard_right_now .testimonial-count a:before, #dashboard_right_now .testimonial-count span:before { content: "\f473" !important; } </style>';
 }
 
 //* Add testimonials details metabox
 function add_testimonial_metaboxes() {
-    add_meta_box('fcwp_testimonial_details', 'Testimonial Details', 'fcwp_testimonial_details', 'fcwp-testimonials', 'normal', 'default');
+    add_meta_box('fcwp_testimonial_details', 'Testimonial Details', 'fcwp_testimonial_details', 'testimonial', 'normal', 'default');
 }
 
 //* Add fields to slide details metabox
