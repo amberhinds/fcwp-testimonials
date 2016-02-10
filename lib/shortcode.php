@@ -12,7 +12,7 @@ function fcwp_shortcode() {
 		while ($query->have_posts()) {
 			$query->the_post();
 			ob_start();
-			the_title();
+			include plugin_dir_path(__FILE__).'../templates/shortcode.php';
 			return ob_get_clean();
 		}
 	}
