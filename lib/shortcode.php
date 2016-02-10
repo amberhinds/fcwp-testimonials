@@ -11,7 +11,9 @@ function fcwp_shortcode() {
 	if ($query->have_posts()) {
 		while ($query->have_posts()) {
 			$query->the_post();
-			return get_the_title();
+			ob_start();
+			the_title();
+			return ob_get_clean();
 		}
 	}
 }
