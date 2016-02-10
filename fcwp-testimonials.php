@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Call in necessary files
 require plugin_dir_path( __FILE__ ) . 'lib/posttype.php';
+require plugin_dir_path( __FILE__ ) . 'lib/shortcode.php';
 
 // add stuff here
 
