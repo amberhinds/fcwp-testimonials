@@ -1,3 +1,4 @@
 <?php the_content() ?>
 
-&mdash;<?php the_title(); ?>, <?php echo get_post_meta( get_the_ID(), '_reviewertitle', true ); ?> at <?php echo get_post_meta( get_the_ID(), '_company', true ); ?>
+&mdash;<?php the_title(); ?>,
+	<?php fcwp_reviewer_title(); ?> at <?php fcwp_reviewer_company(); ?>

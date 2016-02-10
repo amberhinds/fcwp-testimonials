@@ -17,3 +17,11 @@ function fcwp_shortcode() {
 		}
 	}
 }
+
+function fcwp_reviewer_title() {
+	echo get_post_meta( get_the_ID(), '_reviewertitle', true );
+}
+
+function fcwp_reviewer_company() {
+	echo get_post_meta( get_the_ID(), '_company', true );
+}
