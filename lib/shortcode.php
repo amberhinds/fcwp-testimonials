@@ -5,6 +5,7 @@ function fcwp_shortcode() {
 	$args = array(
 		'post_type' => 'testimonial',
 		'orderby' => 'rand',
+		'posts_per_page' => 1,
 	);
 	$query = new WP_Query($args);
 	
@@ -13,9 +14,10 @@ function fcwp_shortcode() {
 			$query->the_post();
 			ob_start();
 			include plugin_dir_path(__FILE__).'../templates/shortcode.php';
-			return ob_get_clean();
 		}
 	}
+	wp_reset_postdata();
+	return ob_get_clean();
 }
 
 function fcwp_reviewer_title() {
