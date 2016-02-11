@@ -1,25 +1,25 @@
 <?php
-//* This file add the custom post type to our testimonials plugin with a taxonomy and custom options.
+//* This file adds the custom post type to our testimonials plugin with a taxonomy and custom options.
 
 //* Create testimonials custom post type
 add_action( 'init', 'fcwp_testimonials_post_type' );
 function fcwp_testimonials_post_type() {
 
     $labels = array(
-		'name'               => _x( 'Testimonials', 'post type general name', 'your-plugin-textdomain' ),
-		'singular_name'      => _x( 'Testimonial', 'post type singular name', 'your-plugin-textdomain' ),
-		'menu_name'          => _x( 'Testimonials', 'admin menu', 'your-plugin-textdomain' ),
-		'name_admin_bar'     => _x( 'Testimonial', 'add new on admin bar', 'your-plugin-textdomain' ),
-		'add_new'            => _x( 'Add New', 'testimonial', 'your-plugin-textdomain' ),
-		'add_new_item'       => __( 'Add New Testimonial', 'your-plugin-textdomain' ),
-		'new_item'           => __( 'New Testimonial', 'your-plugin-textdomain' ),
-		'edit_item'          => __( 'Edit Testimonial', 'your-plugin-textdomain' ),
-		'view_item'          => __( 'View Testimonial', 'your-plugin-textdomain' ),
-		'all_items'          => __( 'All Testimonials', 'your-plugin-textdomain' ),
-		'search_items'       => __( 'Search Testimonials', 'your-plugin-textdomain' ),
-		'parent_item_colon'  => __( 'Parent Testimonials:', 'your-plugin-textdomain' ),
-		'not_found'          => __( 'No testimonials found.', 'your-plugin-textdomain' ),
-		'not_found_in_trash' => __( 'No testimonials found in Trash.', 'your-plugin-textdomain' )
+		'name'               => _x( 'Testimonials', 'post type general name', 'fcwp-testimonials' ),
+		'singular_name'      => _x( 'Testimonial', 'post type singular name', 'fcwp-testimonials' ),
+		'menu_name'          => _x( 'Testimonials', 'admin menu', 'fcwp-testimonials' ),
+		'name_admin_bar'     => _x( 'Testimonial', 'add new on admin bar', 'fcwp-testimonials' ),
+		'add_new'            => _x( 'Add New', 'testimonial', 'fcwp-testimonials' ),
+		'add_new_item'       => __( 'Add New Testimonial', 'fcwp-testimonials' ),
+		'new_item'           => __( 'New Testimonial', 'fcwp-testimonials' ),
+		'edit_item'          => __( 'Edit Testimonial', 'fcwp-testimonials' ),
+		'view_item'          => __( 'View Testimonial', 'fcwp-testimonials' ),
+		'all_items'          => __( 'All Testimonials', 'fcwp-testimonials' ),
+		'search_items'       => __( 'Search Testimonials', 'fcwp-testimonials' ),
+		'parent_item_colon'  => __( 'Parent Testimonials:', 'fcwp-testimonials' ),
+		'not_found'          => __( 'No testimonials found.', 'fcwp-testimonials' ),
+		'not_found_in_trash' => __( 'No testimonials found in Trash.', 'fcwp-testimonials' )
 	);
 
     register_post_type(
@@ -63,7 +63,7 @@ function fcwp_testimonials_tax() {
 		'query_var'         => true,
 		'rewrite'           => array( 'slug' => 'testimonial-categories' ),
 	);
-	register_taxonomy( 'testimonials-tax', 'testimonial', $args);
+	register_taxonomy( 'testimonials-tax', 'testimonial', $args );
 }
 
 //* Change CPT title text
@@ -85,8 +85,8 @@ function fcwp_change_title_text( $translation ) {
 add_action( 'dashboard_glance_items', 'fcwp_cpt_at_glance' );
 function fcwp_cpt_at_glance() {
     $args = array(
-        'public' => true,
-        '_builtin' => false
+        'public' 	=> true,
+        '_builtin'	=> false
     );
     $output = 'object';
     $operator = 'and';
@@ -107,14 +107,14 @@ function fcwp_cpt_at_glance() {
 }
 
 //* Set custom icon for testimonials on dashboard
-add_action('admin_head', 'fcwp_dashboard_cpts_css');
+add_action( 'admin_head', 'fcwp_dashboard_cpts_css' );
 function fcwp_dashboard_cpts_css() {
        echo '<style type="text/css">#dashboard_right_now .testimonial-count a:before, #dashboard_right_now .testimonial-count span:before { content: "\f473" !important; } </style>';
 }
 
 //* Add testimonials details metabox
 function add_testimonial_metaboxes() {
-    add_meta_box('fcwp_testimonial_details', 'Testimonial Details', 'fcwp_testimonial_details', 'testimonial', 'normal', 'default');
+    add_meta_box( 'fcwp_testimonial_details', 'Testimonial Details', 'fcwp_testimonial_details', 'testimonial', 'normal', 'default' );
 }
 
 //* Add fields to slide details metabox
@@ -122,12 +122,12 @@ function fcwp_testimonial_details() {
     global $post;
 
     // Noncename needed to verify where the data originated
-    echo '<input type="hidden" name="testimonialmeta_noncename" id="testimonialmeta_noncename" value="' . wp_create_nonce( plugin_basename(__FILE__) ) . '" />';
+    echo '<input type="hidden" name="testimonialmeta_noncename" id="testimonialmeta_noncename" value="' . wp_create_nonce( plugin_basename( __FILE__ ) ) . '" />';
 
     // Get the slide details if they have already been entered
-    $testimoniallink = get_post_meta($post->ID, '_testimoniallink', true);
-    $reviewertitle = get_post_meta($post->ID, '_reviewertitle', true);
-    $company = get_post_meta($post->ID, '_company', true);
+    $testimoniallink = get_post_meta( $post->ID, '_testimoniallink', true );
+    $reviewertitle = get_post_meta( $post->ID, '_reviewertitle', true );
+    $company = get_post_meta( $post->ID, '_company', true );
 
     // Display the fields
     echo "<p>Enter Reviewer's Title</p>";
@@ -140,8 +140,8 @@ function fcwp_testimonial_details() {
 }
 
 //* Save the metabox data when testimonial is saved
-add_action('save_post', 'fcwp_save_testimonial_meta', 1, 2);
-function fcwp_save_testimonial_meta($post_id, $post) {
+add_action( 'save_post', 'fcwp_save_testimonial_meta', 1, 2 );
+function fcwp_save_testimonial_meta( $post_id, $post ) {
 
     // Verify that we actually submitted data through a form
     if ( !isset( $_POST['testimonialmeta_noncename'] ) || empty( $_POST['testimonialmeta_noncename'] ) ){
@@ -149,29 +149,30 @@ function fcwp_save_testimonial_meta($post_id, $post) {
     }
 
     // verify this came from the our screen and with proper authorization because save_post can be triggered at other times
-    if ( !wp_verify_nonce( $_POST['testimonialmeta_noncename'], plugin_basename(__FILE__) )) {
+    if ( !wp_verify_nonce( $_POST['testimonialmeta_noncename'], plugin_basename(__FILE__) ) ) {
     	return $post->ID;
     }
 
     // Is the user allowed to edit the post or page?
-    if ( !current_user_can( 'edit_post', $post->ID ))
+    if ( !current_user_can( 'edit_post', $post->ID ) ){
         return $post->ID;
+    }
 
     // After authentication, find and save the data using an array
-    $testimonial_meta['_testimoniallink'] = $_POST['_testimoniallink'];
-    $testimonial_meta['_reviewertitle'] = $_POST['_reviewertitle'];
-    $testimonial_meta['_company'] = $_POST['_company'];
+    $testimonial_meta['_testimoniallink']	= $_POST['_testimoniallink'];
+    $testimonial_meta['_reviewertitle']		= $_POST['_reviewertitle'];
+    $testimonial_meta['_company']			= $_POST['_company'];
 
     // Add values of $testimonial_meta as custom fields
-    foreach ($testimonial_meta as $key => $value) { // Cycle through the $testimonial_meta array
+    foreach ( $testimonial_meta as $key => $value ) { // Cycle through the $testimonial_meta array
         if( $post->post_type == 'revision' ) return; // Don't store custom data twice
-        $value = implode(',', (array)$value); // If $value is an array, make it a CSV (unlikely)
-        if(get_post_meta($post->ID, $key, FALSE)) { // If the custom field already has a value
-            update_post_meta($post->ID, $key, $value);
+        $value = implode( ',', (array)$value ); // If $value is an array, make it a CSV (unlikely)
+        if( get_post_meta( $post->ID, $key, FALSE ) ) { // If the custom field already has a value
+            update_post_meta( $post->ID, $key, $value );
         } else { // If the custom field doesn't have a value
-            add_post_meta($post->ID, $key, $value);
+            add_post_meta( $post->ID, $key, $value );
         }
-        if(!$value) delete_post_meta($post->ID, $key); // Delete if blank
+        if(!$value) delete_post_meta( $post->ID, $key ); // Delete if blank
     }
 
 }
