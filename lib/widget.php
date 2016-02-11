@@ -24,7 +24,20 @@ class FCWP_Testimonial_Widget extends WP_Widget {
 		// if ( ! empty( $instance['title'] ) ) {
 			echo $args['before_title'] . 'FCWP Testimonial' . $args['after_title'];
 		// }
-		echo __( 'Hello, World!', 'text_domain' );
+		$q_args = array(
+			'post_type' => 'testimonial',
+			'orderby' => 'rand',
+			'posts_per_page' => 1,
+		);
+		$query = new WP_Query($q_args);
+		
+		if ($query->have_posts()) {
+			while ($query->have_posts()) {
+				$query->the_post();
+				include plugin_dir_path(__FILE__).'../templates/shortcode.php';
+			}
+		}
+		wp_reset_postdata();
 		echo $args['after_widget'];
 	}
 
