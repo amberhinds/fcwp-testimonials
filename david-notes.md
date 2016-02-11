@@ -17,7 +17,7 @@
 # Let's create a widget
 
 1. Add the file and include it
-2. Copypasta from Codex the `WP_Widget` class
+2. Copypasta from Codex the `WP_Widget` class (need BOTH class AND hook) — add that widget to the sidebar, see nothing
 3. Customize output of the widget — slime something there
 4. Add in the loop again, or maybe use get_posts to output something from a real testimonial
 5. Add title to widget
