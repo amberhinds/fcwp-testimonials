@@ -4,12 +4,28 @@
 //* Create testimonials custom post type
 add_action( 'init', 'fcwp_testimonials_post_type' );
 function fcwp_testimonials_post_type() {
-    register_post_type( 'testimonial',
+
+    $labels = array(
+		'name'               => _x( 'Testimonials', 'post type general name', 'your-plugin-textdomain' ),
+		'singular_name'      => _x( 'Testimonial', 'post type singular name', 'your-plugin-textdomain' ),
+		'menu_name'          => _x( 'Testimonials', 'admin menu', 'your-plugin-textdomain' ),
+		'name_admin_bar'     => _x( 'Testimonial', 'add new on admin bar', 'your-plugin-textdomain' ),
+		'add_new'            => _x( 'Add New', 'testimonial', 'your-plugin-textdomain' ),
+		'add_new_item'       => __( 'Add New Testimonial', 'your-plugin-textdomain' ),
+		'new_item'           => __( 'New Testimonial', 'your-plugin-textdomain' ),
+		'edit_item'          => __( 'Edit Testimonial', 'your-plugin-textdomain' ),
+		'view_item'          => __( 'View Testimonial', 'your-plugin-textdomain' ),
+		'all_items'          => __( 'All Testimonials', 'your-plugin-textdomain' ),
+		'search_items'       => __( 'Search Testimonials', 'your-plugin-textdomain' ),
+		'parent_item_colon'  => __( 'Parent Testimonials:', 'your-plugin-textdomain' ),
+		'not_found'          => __( 'No testimonials found.', 'your-plugin-textdomain' ),
+		'not_found_in_trash' => __( 'No testimonials found in Trash.', 'your-plugin-textdomain' )
+	);
+
+    register_post_type(
+    	'testimonial',
         array(
-            'labels' 		=> array(
-                'name' => __( 'Testimonials' ),
-                'singular_name' => __( 'Testimonial' ),
-            	),
+            'labels' 		=> $labels,
             'has_archive' 	=> true,
             'public' 		=> true,
             'rewrite' 		=> array( 'slug' => 'testimonial' ),
@@ -19,12 +35,13 @@ function fcwp_testimonials_post_type() {
             'register_meta_box_cb' => 'add_testimonial_metaboxes'
         )
     );
+
 }
 
 //* Create taxonomy for testimonials CPT
 add_action( 'init', 'fcwp_testimonials_tax' );
 function fcwp_testimonials_tax() {
-		$labels = array(
+	$labels = array(
 		'name'              => _x( 'Testimonial Categories', 'taxonomy general name' ),
 		'singular_name'     => _x( 'Testimonial Category', 'taxonomy singular name' ),
 		'search_items'      => __( 'Search Testimonial Categories' ),
