@@ -1,7 +1,13 @@
 <?php
 //* This file adds the custom post type to our testimonials plugin with a taxonomy and custom options.
 
-//* Create testimonials custom post type
+/**
+ * Create testimonials custom post type.
+ *
+ * Registers the testimonial custom post type.
+ *
+ * @see register_post_type
+ */
 add_action( 'init', 'fcwp_testimonials_post_type' );
 function fcwp_testimonials_post_type() {
 
@@ -37,7 +43,13 @@ function fcwp_testimonials_post_type() {
 
 }
 
-//* Create taxonomy for testimonials CPT
+/**
+ * Create taxonomy for testimonials CPT.
+ *
+ * Description.
+ *
+ * @see register_taxonomy
+ */
 add_action( 'init', 'fcwp_testimonials_tax' );
 function fcwp_testimonials_tax() {
 
@@ -68,7 +80,16 @@ function fcwp_testimonials_tax() {
 
 }
 
-//* Change CPT title text
+/**
+ * Change CPT title text placeholder.
+ *
+ * Description.
+ *
+ * @global object $post Current post information.
+ *
+ * @param string $translation String to be translated.
+ * @return string Modified translation string.
+ */
 add_action( 'gettext', 'fcwp_change_title_text' );
 function fcwp_change_title_text( $translation ) {
     global $post;
@@ -83,7 +104,11 @@ function fcwp_change_title_text( $translation ) {
 }
 
 
-//* Add testimonials to dashboard "At A Glance" metabox
+/**
+ * Add testimonials to dashboard "At A Glance" metabox.
+ *
+ * Description.
+ */
 add_action( 'dashboard_glance_items', 'fcwp_cpt_at_glance' );
 function fcwp_cpt_at_glance() {
     $args = array(
@@ -108,18 +133,34 @@ function fcwp_cpt_at_glance() {
     }
 }
 
-//* Set custom icon for testimonials on dashboard
+/**
+ * Set custom icon for testimonials on dashboard.
+ *
+ * Description.
+ */
 add_action( 'admin_head', 'fcwp_dashboard_cpts_css' );
 function fcwp_dashboard_cpts_css() {
        echo '<style type="text/css">#dashboard_right_now .testimonial-count a:before, #dashboard_right_now .testimonial-count span:before { content: "\f473" !important; } </style>';
 }
 
-//* Add testimonials details metabox
+/**
+ * Add testimonials details metabox.
+ *
+ * Description.
+ *
+ * @see add_meta_box
+ */
 function add_testimonial_metaboxes() {
     add_meta_box( 'fcwp_testimonial_details', 'Testimonial Details', 'fcwp_testimonial_details', 'testimonial', 'normal', 'default' );
 }
 
-//* Add fields to slide details metabox
+/**
+ * Add fields to testimonials details metabox.
+ *
+ * Description.
+ *
+ * @global object $post
+ */
 function fcwp_testimonial_details() {
     global $post;
 
@@ -141,7 +182,17 @@ function fcwp_testimonial_details() {
 
 }
 
-//* Save the metabox data when testimonial is saved
+/**
+ * Save the metabox data when testimonial is saved.
+ *
+ * Description.
+ *
+ * @see get_post_meta, update_post_meta, delete_post_meta
+ *
+ * @param int $post_id Post ID.
+ * @param object $post Current post information.
+ * @return int Post ID.
+ */
 add_action( 'save_post', 'fcwp_save_testimonial_meta', 1, 2 );
 function fcwp_save_testimonial_meta( $post_id, $post ) {
 
