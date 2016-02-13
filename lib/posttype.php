@@ -22,25 +22,25 @@ function fcwp_testimonials_post_type() {
 		'not_found_in_trash' => __( 'No testimonials found in Trash.', 'fcwp-testimonials' )
 	);
 
-    register_post_type(
-    	'testimonial',
-        array(
-            'labels' 		=> $labels,
-            'has_archive' 	=> true,
-            'public' 		=> true,
-            'rewrite' 		=> array( 'slug' => 'testimonial' ),
-            'supports' 		=> array( 'title', 'editor', 'excerpt', 'thumbnail' ),
-	        'menu_position' => 5,
-	        'menu_icon'     => 'dashicons-testimonial',
-            'register_meta_box_cb' => 'add_testimonial_metaboxes'
-        )
-    );
+	$args = array(
+		'labels' 		=> $labels,
+        'has_archive' 	=> true,
+        'public' 		=> true,
+        'rewrite' 		=> array( 'slug' => 'testimonial' ),
+        'supports' 		=> array( 'title', 'editor', 'excerpt', 'thumbnail' ),
+        'menu_position' => 5,
+        'menu_icon'     => 'dashicons-testimonial',
+        'register_meta_box_cb' => 'add_testimonial_metaboxes'
+	);
+
+    register_post_type( 'testimonial', $args );
 
 }
 
 //* Create taxonomy for testimonials CPT
 add_action( 'init', 'fcwp_testimonials_tax' );
 function fcwp_testimonials_tax() {
+
 	$labels = array(
 		'name'              => _x( 'Testimonial Categories', 'taxonomy general name' ),
 		'singular_name'     => _x( 'Testimonial Category', 'taxonomy singular name' ),
@@ -63,14 +63,16 @@ function fcwp_testimonials_tax() {
 		'query_var'         => true,
 		'rewrite'           => array( 'slug' => 'testimonial-categories' ),
 	);
+
 	register_taxonomy( 'testimonials-tax', 'testimonial', $args );
+
 }
 
 //* Change CPT title text
 add_action( 'gettext', 'fcwp_change_title_text' );
 function fcwp_change_title_text( $translation ) {
     global $post;
-    if( isset( $post ) ) {
+    if ( isset( $post ) ) {
         switch( $post->post_type ){
             case 'testimonial' :
                 if( $translation == 'Enter title here' ) return 'Enter Reviewer Name Here';
@@ -99,10 +101,10 @@ function fcwp_cpt_at_glance() {
         if ( current_user_can( 'edit_posts' ) ) {
             $output = '<a href="edit.php?post_type=' . $post_type->name . '">' . $num . ' ' . $text . '</a>';
             echo '<li class="post-count ' . $post_type->name . '-count">' . $output . '</li>';
-            } else {
+        } else {
             $output = '<span>' . $num . ' ' . $text . '</span>';
-                echo '<li class="post-count ' . $post_type->name . '-count">' . $output . '</li>';
-            }
+            echo '<li class="post-count ' . $post_type->name . '-count">' . $output . '</li>';
+        }
     }
 }
 
@@ -149,7 +151,7 @@ function fcwp_save_testimonial_meta( $post_id, $post ) {
     }
 
     // verify this came from the our screen and with proper authorization because save_post can be triggered at other times
-    if ( !wp_verify_nonce( $_POST['testimonialmeta_noncename'], plugin_basename(__FILE__) ) ) {
+    if ( !wp_verify_nonce( $_POST['testimonialmeta_noncename'], plugin_basename( __FILE__ ) ) ) {
     	return $post->ID;
     }
 
@@ -165,14 +167,20 @@ function fcwp_save_testimonial_meta( $post_id, $post ) {
 
     // Add values of $testimonial_meta as custom fields
     foreach ( $testimonial_meta as $key => $value ) { // Cycle through the $testimonial_meta array
-        if( $post->post_type == 'revision' ) return; // Don't store custom data twice
-        $value = implode( ',', (array)$value ); // If $value is an array, make it a CSV (unlikely)
-        if( get_post_meta( $post->ID, $key, FALSE ) ) { // If the custom field already has a value
+        if ( $post->post_type == 'revision' ){
+	        return; // Don't store custom data twice
+	    }
+
+        $value = implode( ',', (array) $value ); // If $value is an array, make it a CSV (unlikely)
+        if ( get_post_meta( $post->ID, $key, FALSE ) ) { // If the custom field already has a value
             update_post_meta( $post->ID, $key, $value );
         } else { // If the custom field doesn't have a value
             add_post_meta( $post->ID, $key, $value );
         }
-        if(!$value) delete_post_meta( $post->ID, $key ); // Delete if blank
+
+        if ( ! $value ) {
+	        delete_post_meta( $post->ID, $key ); // Delete if blank
+	    }
     }
 
 }

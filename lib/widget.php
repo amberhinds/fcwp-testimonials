@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class FCWP_Testimonial_Widget extends WP_Widget {
 
@@ -6,9 +6,9 @@ class FCWP_Testimonial_Widget extends WP_Widget {
 	 * Sets up the widgets name etc
 	 */
 	public function __construct() {
-		$widget_ops = array( 
-			'classname' => 'fcwp_testimonial_widget',
-			'description' => 'Show testimonials from your customers',
+		$widget_ops = array(
+			'classname'		=> 'fcwp_testimonial_widget',
+			'description'	=> 'Show testimonials from your customers',
 		);
 		parent::__construct( 'fcwp_testimonial_widget', 'FCWP Testimonial Widget', $widget_ops );
 	}
@@ -16,8 +16,8 @@ class FCWP_Testimonial_Widget extends WP_Widget {
 	/**
 	 * Outputs the content of the widget
 	 *
-	 * @param array $args
-	 * @param array $instance
+	 * @param array $args Widget arguments
+	 * @param array $instance The widget options
 	 */
 	public function widget( $args, $instance ) {
 		echo $args['before_widget'];
@@ -25,16 +25,16 @@ class FCWP_Testimonial_Widget extends WP_Widget {
 			echo $args['before_title'] . $instance['title'] . $args['after_title'];
 		}
 		$q_args = array(
-			'post_type' => 'testimonial',
-			'orderby' => 'rand',
+			'post_type'		=> 'testimonial',
+			'orderby'		=> 'rand',
 			'posts_per_page' => 1,
 		);
-		$query = new WP_Query($q_args);
-		
-		if ($query->have_posts()) {
-			while ($query->have_posts()) {
+		$query = new WP_Query( $q_args );
+
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
 				$query->the_post();
-				include plugin_dir_path(__FILE__).'../templates/shortcode.php';
+				include plugin_dir_path( __FILE__ ) . '../templates/shortcode.php';
 			}
 		}
 		wp_reset_postdata();
@@ -47,13 +47,13 @@ class FCWP_Testimonial_Widget extends WP_Widget {
 	 * @param array $instance The widget options
 	 */
 	public function form( $instance ) {
-		$title = ! empty( $instance['title'] ) ? $instance['title'] : __( 'New title', 'text_domain' );
+		$title = ! empty( $instance['title'] ) ? $instance['title'] : __( 'New title', 'fcwp-testimonials' );
 		?>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
+		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
-		<?php 
+		<?php
 	}
 
 	/**
