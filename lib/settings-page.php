@@ -72,8 +72,8 @@ class FCWPSettingsPage{
 		$html = '';
 		$options = get_option( 'fcwp_testimonials' );
 
-		$html .= "<input type='checkbox' name='plugin_prefix_settings[toggle_styles]' ".checked( $options['toggle_styles'], 1 )." value='1'> ";
-		$html .= "<label for='show_header'>".__( 'Use plugin stylesheet', 'fcwp-testimonials' )."</label>";
+		$html .= "<input type='checkbox' name='fcwp_testimonials[toggle_styles]' ".checked( $options['toggle_styles'], 1 )." value='1'> ";
+		$html .= "<label for='fcwp_testimonials[toggle_styles]'>".__( 'Yes, use the plugin styles', 'fcwp-testimonials' )."</label>";
 
 		echo $html;
 
@@ -82,6 +82,7 @@ class FCWPSettingsPage{
 
 	public function image_field(){
 
+		$html = '';
 		$options = get_option( 'fcwp_testimonials' );
 
 		if ( empty( $options['image_size'] ) ){
@@ -89,10 +90,11 @@ class FCWPSettingsPage{
 			$options['image_size']['height']	= '350';
 		}
 
-		?>
-		<input type='text' name='plugin_prefix_settings[image_size][width]' value='<?php echo $options['image_size']['width']; ?>'>
-		<input type='text' name='plugin_prefix_settings[image_size][height]' value='<?php echo $options['image_size']['height']; ?>'>
-		<?php
+
+		$html .= "<input type='text' name='fcwp_testimonials[image_size][width]' value='".$options['image_size']['width']."'>";
+		$html .= "<input type='text' name='fcwp_testimonials[image_size][height]' value='".$options['image_size']['height']."'>";
+
+		echo $html;
 
 	}
 
