@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 require plugin_dir_path( __FILE__ ) . 'lib/posttype.php';
 require plugin_dir_path( __FILE__ ) . 'lib/shortcode.php';
 require plugin_dir_path( __FILE__ ) . 'lib/widget.php';
+require plugin_dir_path( __FILE__ ) . 'lib/settings-page.php';
 
 // add stuff here
 
