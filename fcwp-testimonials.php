@@ -20,6 +20,10 @@ require plugin_dir_path( __FILE__ ) . 'lib/shortcode.php';
 require plugin_dir_path( __FILE__ ) . 'lib/widget.php';
 require plugin_dir_path( __FILE__ ) . 'lib/settings-page.php';
 
+// Run our settings page
+$testimonials_page = new FCWPSettingsPage;
+$testimonials_page->hooks( __FILE__ );
+
 // Get our option to create our media size
 $options = get_option( 'fcwp_testimonials' );
 
@@ -60,6 +64,7 @@ function myplugin_activate() {
         return;
     }
 
+	// Check if this option has already been registered for some reason
 	if ( get_option( 'fcwp_testimonials' ) ){
 		return;
 	}
@@ -76,7 +81,7 @@ function myplugin_activate() {
 		'fcwp_testimonials', 	// Value name
 		$value, 				// Value we're pushing ing
 		'', 					// Deprecated
-		'no' 					// Autoload - generally put now
+		'no' 					// Autoload - generally put no
 	);
 
 }

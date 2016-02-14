@@ -9,10 +9,11 @@ class FCWPSettingsPage{
 	 *
 	 * @see add_action
 	 */
-	public function hooks(){
+	public function hooks( $file ){
 
 		add_action( 'admin_menu', array( $this, 'set_menu_page' ) );
 		add_action( 'admin_init', array( $this, 'register_fields' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( $file ) , array( $this, 'add_settings_link' ) );
 
 	}
 
@@ -33,6 +34,24 @@ class FCWPSettingsPage{
     		'fcwp_testimonials',								// Menu slug (ID)
     		array( $this, 'settings_page' )						// Callback function to render the page
     	);
+
+	}
+
+
+	/**
+	 * Add settings link to plugin list table.
+	 *
+	 * Description.
+	 *
+	 * @param  array $links Existing links
+	 * @return array Modified links
+	 */
+	public function add_settings_link( $links ) {
+
+		$settings_link = '<a href="options-general.php?page=fcwp_testimonials">' . __( 'Settings', 'fcwp-testimonials' ) . '</a>';
+  		array_push( $links, $settings_link );
+
+  		return $links;
 
 	}
 
@@ -164,6 +183,3 @@ class FCWPSettingsPage{
 	}
 
 }
-
-$testimonials_page = new FCWPSettingsPage;
-$testimonials_page->hooks();
