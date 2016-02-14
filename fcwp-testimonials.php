@@ -20,12 +20,26 @@ require plugin_dir_path( __FILE__ ) . 'lib/shortcode.php';
 require plugin_dir_path( __FILE__ ) . 'lib/widget.php';
 require plugin_dir_path( __FILE__ ) . 'lib/settings-page.php';
 
-// add stuff here
+// Get our option
+$options = get_option( 'fcwp_testimonials' );
 
 //* Add the testimonals featured image size
-add_image_size( 'testimonial-featured', 350, 350, true ); // 350 pixels wide by 350 pixels tall, hard crop mode
+if ( ! empty( $options['image_size'] ) ){
+	add_image_size(
+		'testimonial-featured', 		 // Media size slug
+		$options['image_size']['width'], // Crop width
+		$options['image_size']['width'], // Crop height
+		true 							 // Hard crop
+	);
+}
 
+// Enqueue our stylesheet IF chosen
 add_action( 'wp_enqueue_scripts', 'fcwp_stylesheet' );
 function fcwp_stylesheet() {
-    wp_enqueue_style( 'fcwp-style', plugin_dir_url( __FILE__ ) . 'style.css' );
+
+	$options = get_option( 'fcwp_testimonials' );
+	if ( $options['toggle_styles'] ){
+		wp_enqueue_style( 'fcwp-style', plugin_dir_url( __FILE__ ) . 'style.css' );
+	}
+
 }

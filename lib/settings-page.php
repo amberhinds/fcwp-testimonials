@@ -5,8 +5,33 @@ class FCWPSettingsPage{
 
 	public function hooks(){
 
+		add_action( 'admin_init', array( $this, 'set_options' ) );
 		add_action( 'admin_menu', array( $this, 'set_menu_page' ) );
 		add_action( 'admin_init', array( $this, 'register_fields' ) );
+
+	}
+
+
+	public function set_options(){
+
+		if ( get_option( 'fcwp_testimonials' ) ){
+			return;
+		}
+
+		$value = array(
+			'toggle_styles'	=> 1,
+			'image_size'	=> array(
+				'width'		=> 350,
+				'height'	=> 350
+			)
+		);
+
+		add_option(
+			'fcwp_testimonials', 	// Value name
+			$value, 				// Value we're pushing ing
+			'', 					// Deprecated
+			'no' 					// Autoload - generally put now
+		);
 
 	}
 
@@ -26,8 +51,6 @@ class FCWPSettingsPage{
 
 
 	public function register_fields(){
-
-		register_setting( 'fcwp_testimonials', 'plugin_prefix_settings' );
 
 		// Add settings section
 	    add_settings_section(
@@ -57,6 +80,8 @@ class FCWPSettingsPage{
 		    'fcwp_testimonials'					// The name of the section to which this field belongs
 		);
 
+		register_setting( 'fcwp_testimonials', 'fcwp_testimonials' );
+
 	}
 
 
@@ -72,7 +97,13 @@ class FCWPSettingsPage{
 		$html = '';
 		$options = get_option( 'fcwp_testimonials' );
 
-		$html .= "<input type='checkbox' name='fcwp_testimonials[toggle_styles]' ".checked( $options['toggle_styles'], 1 )." value='1'> ";
+		if ( isset( $options['toggle_styles'] ) ){
+			$checked = checked( $options['toggle_styles'], 1, false );
+		} else {
+			$checked = '';
+		}
+
+		$html .= "<input type='checkbox' name='fcwp_testimonials[toggle_styles]' $checked value='1'> ";
 		$html .= "<label for='fcwp_testimonials[toggle_styles]'>".__( 'Yes, use the plugin styles', 'fcwp-testimonials' )."</label>";
 
 		echo $html;
@@ -89,7 +120,6 @@ class FCWPSettingsPage{
 			$options['image_size']['width']		= '350';
 			$options['image_size']['height']	= '350';
 		}
-
 
 		$html .= "<input type='text' name='fcwp_testimonials[image_size][width]' value='".$options['image_size']['width']."'>";
 		$html .= "<input type='text' name='fcwp_testimonials[image_size][height]' value='".$options['image_size']['height']."'>";
