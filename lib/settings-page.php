@@ -2,7 +2,13 @@
 
 class FCWPSettingsPage{
 
-
+	/**
+	 * Hooks function to add to.
+	 *
+	 * Description.
+	 *
+	 * @see add_action
+	 */
 	public function hooks(){
 
 		add_action( 'admin_init', array( $this, 'set_options' ) );
@@ -12,6 +18,13 @@ class FCWPSettingsPage{
 	}
 
 
+	/**
+	 * Initially set our option up.
+	 *
+	 * Description.
+	 *
+	 * @see get_option, add_option
+	 */
 	public function set_options(){
 
 		if ( get_option( 'fcwp_testimonials' ) ){
@@ -36,6 +49,13 @@ class FCWPSettingsPage{
 	}
 
 
+	/**
+	 * Add and initiate our submenu for options.
+	 *
+	 * Description.
+	 *
+	 * @see add_submenu_page
+	 */
 	public function set_menu_page(){
 
 		add_submenu_page(
@@ -50,6 +70,13 @@ class FCWPSettingsPage{
 	}
 
 
+	/**
+	 * Initiate the sections and settings fields for the Settings API.
+	 *
+	 * Description.
+	 *
+	 * @see add_settings_section, add_settings_field
+	 */
 	public function register_fields(){
 
 		// Add settings section
@@ -85,6 +112,9 @@ class FCWPSettingsPage{
 	}
 
 
+	/**
+	 * Print the section description.
+	 */
 	public function section_description(){
 
 		echo __( 'Control the the frontend output of your testimonials. You can use these settings to modify how your testimonials appear.', 'fcwp-testimonials' );
@@ -92,6 +122,13 @@ class FCWPSettingsPage{
 	}
 
 
+	/**
+	 * Retrieve our setting and print out the input for the styles toggle.
+	 *
+	 * Description.
+	 *
+	 * @see get_option
+	 */
 	public function styles_field(){
 
 		$html = '';
@@ -111,6 +148,13 @@ class FCWPSettingsPage{
 	}
 
 
+	/**
+	 * Retrieve our setting and print out the input for the image dimensions.
+	 *
+	 * Description.
+	 *
+	 * @see get_option
+	 */
 	public function image_field(){
 
 		$html = '';
@@ -129,6 +173,13 @@ class FCWPSettingsPage{
 	}
 
 
+	/**
+	 * Build our settings page.
+	 *
+	 * Description.
+	 *
+	 * @see settings_fields, do_settings_sections, submit_button
+	 */
 	public function settings_page(){
 
 		?>
@@ -136,7 +187,7 @@ class FCWPSettingsPage{
 
 			<?php
 				settings_fields( 'fcwp_testimonials' );			// Call our fields for this page
-				do_settings_sections( 'fcwp_testimonials' );
+				do_settings_sections( 'fcwp_testimonials' );	// Print out the section
 				submit_button();								// Form submit button
 			?>
 
