@@ -11,43 +11,10 @@ class FCWPSettingsPage{
 	 */
 	public function hooks(){
 
-		add_action( 'admin_init', array( $this, 'set_options' ) );
 		add_action( 'admin_menu', array( $this, 'set_menu_page' ) );
 		add_action( 'admin_init', array( $this, 'register_fields' ) );
 
 	}
-
-
-	/**
-	 * Initially set our option up.
-	 *
-	 * Description.
-	 *
-	 * @see get_option, add_option
-	 */
-	public function set_options(){
-
-		if ( get_option( 'fcwp_testimonials' ) ){
-			return;
-		}
-
-		$value = array(
-			'toggle_styles'	=> 1,
-			'image_size'	=> array(
-				'width'		=> 350,
-				'height'	=> 350
-			)
-		);
-
-		add_option(
-			'fcwp_testimonials', 	// Value name
-			$value, 				// Value we're pushing ing
-			'', 					// Deprecated
-			'no' 					// Autoload - generally put now
-		);
-
-	}
-
 
 	/**
 	 * Add and initiate our submenu for options.

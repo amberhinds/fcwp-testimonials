@@ -20,7 +20,7 @@ require plugin_dir_path( __FILE__ ) . 'lib/shortcode.php';
 require plugin_dir_path( __FILE__ ) . 'lib/widget.php';
 require plugin_dir_path( __FILE__ ) . 'lib/settings-page.php';
 
-// Get our option
+// Get our option to create our media size
 $options = get_option( 'fcwp_testimonials' );
 
 //* Add the testimonals featured image size
@@ -41,5 +41,71 @@ function fcwp_stylesheet() {
 	if ( $options['toggle_styles'] ){
 		wp_enqueue_style( 'fcwp-style', plugin_dir_url( __FILE__ ) . 'style.css' );
 	}
+
+}
+
+
+/**
+ * Activation method to initially setup our wp_option.
+ *
+ * Description.
+ *
+ * @see add_option, get_option
+ */
+register_activation_hook( __FILE__, 'fcwp_testimonials_activate' );
+function myplugin_activate() {
+
+	// Check if the current user has priveledges to run this method
+	if ( ! current_user_can( 'activate_plugins' ) ){
+        return;
+    }
+
+	if ( get_option( 'fcwp_testimonials' ) ){
+		return;
+	}
+
+	$value = array(
+		'toggle_styles'	=> 1,
+		'image_size'	=> array(
+			'width'		=> 350,
+			'height'	=> 350
+		)
+	);
+
+	add_option(
+		'fcwp_testimonials', 	// Value name
+		$value, 				// Value we're pushing ing
+		'', 					// Deprecated
+		'no' 					// Autoload - generally put now
+	);
+
+}
+
+
+/**
+ * Dectivation method to clean up after ourselves.
+ *
+ * Description.
+ *
+ * @see unregister_setting, delete_option
+ */
+register_uninstall_hook( __FILE__, 'fcwp_testimonials_uninstall' );
+function fcwp_testimonials_uninstall() {
+
+	// Check if the current user has priveledges to run this method
+	if ( ! current_user_can( 'activate_plugins' ) ){
+        return;
+    }
+
+    // Check that we're on the correct file that is registered with the uninstall hook
+    if ( __FILE__ != WP_UNINSTALL_PLUGIN ){
+        return;
+    }
+
+	// Cleanly unregister our setting
+	unregister_setting( 'fcwp_testimonials', 'fcwp_testimonials' );
+
+	// Clean up our wp_options option
+	delete_option( 'fcwp_testimonials' );
 
 }
