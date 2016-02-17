@@ -5,9 +5,12 @@ class FCWPSettingsPage{
 	/**
 	 * Hooks function to add to.
 	 *
-	 * Description.
+	 * This function is simply a method to run all our WordPress hooks. We use this
+	 * in lieu of a __construct method to avoid the hooks being registered and
+	 * run twice in the instance of someone accessing a single method.
 	 *
-	 * @see add_action
+	 * @see add_action	https://developer.wordpress.org/reference/functions/add_action/
+	 * @see add_filter	https://developer.wordpress.org/reference/functions/add_filter/
 	 */
 	public function hooks( $file ){
 
@@ -20,9 +23,14 @@ class FCWPSettingsPage{
 	/**
 	 * Add and initiate our submenu for options.
 	 *
-	 * Description.
+	 * Her's where we create our actual settings page. Using one simple function,
+	 * we name the page, set a title, callback function, id and givt it a minimum
+	 * capability of user who can access it.
 	 *
-	 * @see add_submenu_page
+	 * One could also set a menu_page but this should really only been done if
+	 * the plugin is big enough to support multiple sub-settings pages.
+	 *
+	 * @see add_submenu_page	https://developer.wordpress.org/reference/functions/add_submenu_page/
 	 */
 	public function set_menu_page(){
 
@@ -41,7 +49,8 @@ class FCWPSettingsPage{
 	/**
 	 * Add settings link to plugin list table.
 	 *
-	 * Description.
+	 * Modify the links in our plugin listing (plugins/php) to display a 'settings'
+	 * link. Link to the settings page we set in this file.
 	 *
 	 * @param  array $links Existing links
 	 * @return array Modified links
@@ -59,9 +68,16 @@ class FCWPSettingsPage{
 	/**
 	 * Initiate the sections and settings fields for the Settings API.
 	 *
-	 * Description.
+	 * Here's where we actually register each and every settings and section.
+	 * The setting is the encompassing group of settings and then each setting
+	 * field is an individual setting item.
 	 *
-	 * @see add_settings_section, add_settings_field
+	 * These can also be hooked into any existing settings pags but it's most
+	 * common to create your own so that it's easy for a user to find.
+	 *
+	 * @see add_settings_section	https://developer.wordpress.org/reference/functions/add_settings_section/
+	 * @see add_settings_field		https://developer.wordpress.org/reference/functions/add_settings_field/
+	 * @see register_setting		https://developer.wordpress.org/reference/functions/register_setting/
 	 */
 	public function register_fields(){
 
@@ -111,9 +127,10 @@ class FCWPSettingsPage{
 	/**
 	 * Retrieve our setting and print out the input for the styles toggle.
 	 *
-	 * Description.
+	 * Here we compile the HTML for the styles toggle field. Simple checkbox.
 	 *
-	 * @see get_option
+	 * @see checked		https://developer.wordpress.org/reference/functions/checked/
+	 * @see get_option	https://developer.wordpress.org/reference/functions/get_option/
 	 */
 	public function styles_field(){
 
@@ -137,9 +154,10 @@ class FCWPSettingsPage{
 	/**
 	 * Retrieve our setting and print out the input for the image dimensions.
 	 *
-	 * Description.
+	 * Here we compile the HTML for the styles toggle field. Two boxes with the
+	 * height and width broken into sub array values.
 	 *
-	 * @see get_option
+	 * @see get_option	https://developer.wordpress.org/reference/functions/get_option/
 	 */
 	public function image_field(){
 
@@ -162,9 +180,15 @@ class FCWPSettingsPage{
 	/**
 	 * Build our settings page.
 	 *
-	 * Description.
+	 * This function serves to cimpile all of the pieces for the settings page.
+	 * It seems so simple because we have registered our settings with the Settings
+	 * API which does the heavy lifting for us. We could have put our HTML fields
+	 * in here and done our own checks instead, but the Settings API is cleaner
+	 * and generally safer.
 	 *
-	 * @see settings_fields, do_settings_sections, submit_button
+	 * @see settings_fields			https://developer.wordpress.org/reference/functions/settings_fields/
+	 * @see do_settings_sections 	https://developer.wordpress.org/reference/functions/do_settings_sections/
+	 * @see submit_button			https://developer.wordpress.org/reference/functions/submit_button/
 	 */
 	public function settings_page(){
 

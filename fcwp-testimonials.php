@@ -4,7 +4,7 @@
  * Plugin URI: http://www.meetup.com/Fort-Collins-WordPress-Meetup
  * Description: A basic testimonials plugin built for the Fort Collins WordPress meetup
  * Version: 1.0.0
- * Author: Amber Hinds, David Hayes, Mike Selander, Jeremy Green, Michael Launer
+ * Author: Amber Hinds, David Hayes, Jeremy Green, Michael Launer, Mike Selander
  * Author URI: http://www.meetup.com/Fort-Collins-WordPress-Meetup
  * Text Domain: fcwp-testimonials
  * License: GPL2
