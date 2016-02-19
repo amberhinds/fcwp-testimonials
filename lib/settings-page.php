@@ -39,7 +39,7 @@ class FCWPSettingsPage{
     		__( 'Testimonial Settings', 'fcwp-testimonials' ),	// Page title text
     		__( 'Testimonial Settings', 'fcwp-testimonials' ),	// Menu title text
     		'manage_options',									// Minimum capability to see this page
-    		'fcwp_testimonials',								// Menu slug (ID)
+    		'fcwp_page',										// Menu slug (ID)
     		array( $this, 'settings_page' )						// Callback function to render the page
     	);
 
@@ -83,10 +83,10 @@ class FCWPSettingsPage{
 
 		// Add settings section
 	    add_settings_section(
-	        'fcwp_testimonials',					// ID used to identify this section and with which to register options
+	        'fcwp_group',							// ID used to identify this section and with which to register options
 	        __( 'Testimonial Display Options', 'fcwp-testimonials' ), // Title to be displayed on the administration page
 	        array( $this, 'section_description' ),	// Callback used to render the description of the section
-	        'fcwp_testimonials'						// Page on which to add this section of options
+	        'fcwp_page'								// Page on which to add this section of options
 	    );
 
 
@@ -95,8 +95,8 @@ class FCWPSettingsPage{
 		    'toggle_styles',					// ID used to identify the field throughout the theme
 		    __( 'Use FCWP Styles?', 'fcwp-testimonials' ), // The field label
 		    array( $this, 'styles_field' ),		// Callback used to render the HTML of the field
-		    'fcwp_testimonials',				// The page on which this option will be displayed
-		    'fcwp_testimonials'					// The name of the section to which this field belongs
+		    'fcwp_page',						// The page on which this option will be displayed
+		    'fcwp_group'						// The name of the section to which this field belongs
 		);
 
 
@@ -105,11 +105,14 @@ class FCWPSettingsPage{
 		    'image_size',						// ID used to identify the field throughout the theme
 		    __( 'Enter image size', 'fcwp-testimonials' ), // The field label
 		    array( $this, 'image_field' ),		// Callback used to render the HTML of the field
-		    'fcwp_testimonials',				// The page on which this option will be displayed
-		    'fcwp_testimonials'					// The name of the section to which this field belongs
+		    'fcwp_page',						// The page on which this option will be displayed
+		    'fcwp_group'						// The name of the section to which this field belongs
 		);
 
-		register_setting( 'fcwp_testimonials', 'fcwp_testimonials' );
+		register_setting(
+			'fcwp_group', 			// The group of settings that this setting belongs to
+			'fcwp_option' 			// The setting ID
+		);
 
 	}
 
@@ -135,7 +138,7 @@ class FCWPSettingsPage{
 	public function styles_field(){
 
 		$html = '';
-		$options = get_option( 'fcwp_testimonials' );
+		$options = get_option( 'fcwp_option' );
 
 		if ( isset( $options['toggle_styles'] ) ){
 			$checked = checked( $options['toggle_styles'], 1, false );
@@ -143,8 +146,8 @@ class FCWPSettingsPage{
 			$checked = '';
 		}
 
-		$html .= "<input type='checkbox' name='fcwp_testimonials[toggle_styles]' $checked value='1'> ";
-		$html .= "<label for='fcwp_testimonials[toggle_styles]'>".__( 'Yes, use the plugin styles', 'fcwp-testimonials' )."</label>";
+		$html .= "<input type='checkbox' name='fcwp_option[toggle_styles]' $checked value='1'> ";
+		$html .= "<label for='fcwp_option[toggle_styles]'>".__( 'Yes, use the plugin styles', 'fcwp-testimonials' )."</label>";
 
 		echo $html;
 
@@ -162,15 +165,15 @@ class FCWPSettingsPage{
 	public function image_field(){
 
 		$html = '';
-		$options = get_option( 'fcwp_testimonials' );
+		$options = get_option( 'fcwp_option' );
 
 		if ( empty( $options['image_size'] ) ){
 			$options['image_size']['width']		= '350';
 			$options['image_size']['height']	= '350';
 		}
 
-		$html .= "<input type='text' name='fcwp_testimonials[image_size][width]' value='".$options['image_size']['width']."'>";
-		$html .= "<input type='text' name='fcwp_testimonials[image_size][height]' value='".$options['image_size']['height']."'>";
+		$html .= "<input type='text' name='fcwp_option[image_size][width]' value='".$options['image_size']['width']."'>";
+		$html .= "<input type='text' name='fcwp_option[image_size][height]' value='".$options['image_size']['height']."'>";
 
 		echo $html;
 
@@ -196,8 +199,8 @@ class FCWPSettingsPage{
 		<form action='options.php' method='post'>
 
 			<?php
-				settings_fields( 'fcwp_testimonials' );			// Call our fields for this page
-				do_settings_sections( 'fcwp_testimonials' );	// Print out the section
+				settings_fields( 'fcwp_group' );				// Call our fields for this page
+				do_settings_sections( 'fcwp_page' );			// Print out the section
 				submit_button();								// Form submit button
 			?>
 
