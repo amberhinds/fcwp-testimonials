@@ -64,7 +64,7 @@ function fcwp_stylesheet() {
  * @see add_option, get_option
  */
 register_activation_hook( __FILE__, 'fcwp_testimonials_activate' );
-function myplugin_activate() {
+function fcwp_testimonials_activate() {
 
 	// Check if the current user has priveledges to run this method
 	if ( ! current_user_can( 'activate_plugins' ) ){
