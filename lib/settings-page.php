@@ -23,7 +23,7 @@ class FCWPSettingsPage{
 	/**
 	 * Add and initiate our submenu for options.
 	 *
-	 * Her's where we create our actual settings page. Using one simple function,
+	 * Here's where we create our actual settings page. Using one simple function,
 	 * we name the page, set a title, callback function, id and givt it a minimum
 	 * capability of user who can access it.
 	 *

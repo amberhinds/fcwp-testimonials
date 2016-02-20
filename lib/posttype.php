@@ -1,5 +1,5 @@
 <?php
-//* This file adds the custom post type to our testimonials plugin with a taxonomy and custom options.
+//* This file adds the custom post type to our testimonials plugin with a taxonomy and custom meta box options.
 
 /**
  * Create testimonials custom post type.
@@ -46,7 +46,7 @@ function fcwp_testimonials_post_type() {
 /**
  * Create taxonomy for testimonials CPT.
  *
- * Description.
+ * Registers a hierarchical (like categories) taxonomy for the testimonials custom post type
  *
  * @see register_taxonomy
  */
@@ -80,34 +80,17 @@ function fcwp_testimonials_tax() {
 
 }
 
-/**
- * Change CPT title text placeholder.
- *
- * Description.
- *
- * @global object $post Current post information.
- *
- * @param string $translation String to be translated.
- * @return string Modified translation string.
- */
-add_action( 'gettext', 'fcwp_change_title_text' );
-function fcwp_change_title_text( $translation ) {
-    global $post;
-    if ( isset( $post ) ) {
-        switch( $post->post_type ){
-            case 'testimonial' :
-                if( $translation == 'Enter title here' ) return 'Enter Reviewer Name Here';
-            break;
-        }
-    }
-    return $translation;
-}
-
 
 /**
  * Add testimonials to dashboard "At A Glance" metabox.
  *
- * Description.
+ * Use the get_post_types() function to return all CPTs,
+ * then loop through them and generate a count of published posts
+ * and add it to "At A Glance" with an edit link if the current user has permission to edit them.
+ * 
+ * @see get_post_types
+ * @see wp_count_posts
+ * @see current_user_can
  */
 add_action( 'dashboard_glance_items', 'fcwp_cpt_at_glance' );
 function fcwp_cpt_at_glance() {
@@ -136,7 +119,9 @@ function fcwp_cpt_at_glance() {
 /**
  * Set custom icon for testimonials on dashboard.
  *
- * Description.
+ * The default WP icon for CPTs is the same pushpin used for posts
+ * We want our at a glance icon to match the dashicon set when registering the post type.
+ * This echos style html in the header of the admin panel
  */
 add_action( 'admin_head', 'fcwp_dashboard_cpts_css' );
 function fcwp_dashboard_cpts_css() {
@@ -144,9 +129,35 @@ function fcwp_dashboard_cpts_css() {
 }
 
 /**
+ * Change CPT title text placeholder.
+ *
+ * Changes the "Enter Title Here" placehoder text that defaults with post titles
+ * so users will know that this is where the name of the reviewer goes when creating a new testimonial. 
+ *
+ * @global object $post Current post information.
+ * Learn about global variables at https://codex.wordpress.org/Global_Variables
+ *
+ * @param string $translation String to be translated.
+ * @return string Modified translation string.
+ */
+add_action( 'gettext', 'fcwp_change_title_text' );
+function fcwp_change_title_text( $translation ) {
+    global $post;
+    if ( isset( $post ) ) {
+        switch( $post->post_type ){
+            case 'testimonial' :
+                if( $translation == 'Enter title here' ) return 'Enter Reviewer Name Here';
+            break;
+        }
+    }
+    return $translation;
+}
+
+/**
  * Add testimonials details metabox.
  *
- * Description.
+ * Create a metabox only on the testimonials CPT to hold our custom meta data needed for the CPT
+ * Don't forget to add it to the args for your register_post_type() function above
  *
  * @see add_meta_box
  */
@@ -160,6 +171,9 @@ function add_testimonial_metaboxes() {
  * Description.
  *
  * @global object $post
+ *
+ * @see wp_create_nonce
+ * @see get_post_meta
  */
 function fcwp_testimonial_details() {
     global $post;
@@ -167,18 +181,18 @@ function fcwp_testimonial_details() {
     // Noncename needed to verify where the data originated
     echo '<input type="hidden" name="testimonialmeta_noncename" id="testimonialmeta_noncename" value="' . wp_create_nonce( plugin_basename( __FILE__ ) ) . '" />';
 
-    // Get the slide details if they have already been entered
-    $testimoniallink = get_post_meta( $post->ID, '_testimoniallink', true );
-    $reviewertitle = get_post_meta( $post->ID, '_reviewertitle', true );
-    $company = get_post_meta( $post->ID, '_company', true );
+    // Get the testimonial details if they have already been entered
+    $testimoniallink = get_post_meta( $post->ID, 'fcwp_testimoniallink', true );
+    $reviewertitle = get_post_meta( $post->ID, 'fcwp_reviewertitle', true );
+    $company = get_post_meta( $post->ID, 'fcwp_company', true );
 
     // Display the fields
     echo "<p>Enter Reviewer's Title</p>";
-    echo '<input type="text" name="_reviewertitle" value="' . $reviewertitle  . '" class="widefat" />';
+    echo '<input type="text" name="fcwp_reviewertitle" value="' . $reviewertitle  . '" class="widefat" />';
     echo "<p>Enter Reviewer's Company</p>";
-    echo '<input type="text" name="_company" value="' . $company  . '" class="widefat" />';
-    echo '<p>Enter testimonial Link</p>';
-    echo '<input type="text" name="_testimoniallink" value="' . $testimoniallink  . '" class="widefat" />';
+    echo '<input type="text" name="fcwp_company" value="' . $company  . '" class="widefat" />';
+    echo '<p>Enter Testimonial Link</p>';
+    echo '<input type="text" name="fcwp_testimoniallink" value="' . $testimoniallink  . '" class="widefat" />';
 
 }
 
@@ -212,9 +226,9 @@ function fcwp_save_testimonial_meta( $post_id, $post ) {
     }
 
     // After authentication, find and save the data using an array
-    $testimonial_meta['_testimoniallink']	= $_POST['_testimoniallink'];
-    $testimonial_meta['_reviewertitle']		= $_POST['_reviewertitle'];
-    $testimonial_meta['_company']			= $_POST['_company'];
+    $testimonial_meta['fcwp_testimoniallink']	= $_POST['fcwp_testimoniallink'];
+    $testimonial_meta['fcwp_reviewertitle']		= $_POST['fcwp_reviewertitle'];
+    $testimonial_meta['fcwp_company']			= $_POST['fcwp_company'];
 
     // Add values of $testimonial_meta as custom fields
     foreach ( $testimonial_meta as $key => $value ) { // Cycle through the $testimonial_meta array
