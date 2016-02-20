@@ -1,0 +1,91 @@
+# Notes for FCWP Plugin Development Workshop 
+
+- What are WordPress plugins
+    - modules you can activate on your site to provide a series of features or elements
+    - PHP script that extends or alters the core functionality of WordPress
+    - Simple
+        - Batch Comment Spam Deletion https://wordpress.org/plugins/batch-comment-spam-deletion/
+        - Inspiring Dashboards https://wordpress.org/plugins/inspiring-dashboards/
+        - Page Edit Toolbar https://wordpress.org/plugins/page-edit-toolbar/
+    - Extensive
+        - Yoast SEO https://wordpress.org/plugins/wordpress-seo/
+        - WooCommerce https://wordpress.org/plugins/woocommerce/
+        - Gravity Forms
+    - Different than your theme
+        - wp-content/themes/
+        - wp-content/plugins/
+        - Uses hooks, filters, shortcodes, widgets
+        - Plugins: functionality, Themes: styling
+        - Want your user to be able to change the theme (design) and not lose any functionality
+        - Create a functionality plugin when developing a theme
+- Strengths
+    - use it with almost any theme and it will work
+    - built to be modular so you can copy it from project to project
+    - used a container for all of your code and elements. Everything it needs to function is in one package.
+    - ability to modify the behavior of WordPress without modifying any core files. Hacked core files will be overwritten every time you update WordPress.
+- Weaknesses
+    - limited access to the theme. Output limited to shortcakes or widgets
+    - plugin conflicts can occur.
+        - JS error from one plugin could break another plugin
+        - using identical function names (why you should prefix your functions and classes
+    - limited access to design
+- Plugin Interactions with WordPress
+    - Plugin API
+        - Actions
+        - Filterse
+    - Widgets API
+        - create and manage widgets
+    - Shortcode API
+        - Add shortcode support to your plugin [helloworld]
+    - HTTP API
+        - send HTTP requests from your plugin
+    - Settings API
+        - insert settings for your plugin
+    - Options
+        - store and retrieve options for your plugin
+    - Dashboard Widgets
+        - create admin dashboard widgets
+    - Rewrite
+        - Create custom rewrite rules in your plugin
+    - Transients
+        - Create temporary options with an expiration date
+    - Database
+        - access the WordPress database to perform create, update, delete and retrieve actions
+- Core Concepts
+    - Actions
+        - trigger performed by WordPress at a certain time
+        - When triggered, it will find all functions that have been attached to this action and execute them in the correct order
+        - Dozens of actions https://codex.wordpress.org/Plugin_API/Action_Reference
+        - do_action https://developer.wordpress.org/reference/functions/do_action/
+        - add_action https://developer.wordpress.org/reference/functions/add_action/
+    - Filters
+        - accepts a variable or series of variables, modifies them, and returns them back
+        - apply_filters https://developer.wordpress.org/reference/functions/apply_filters/
+        - add_filter https://codex.wordpress.org/Function_Reference/add_filter
+    - Plugin Call on Page Load
+        - wp-config > functions loaded > plugins loaded > pluggable loaded > translations loaded > theme loaded > page content
+- Basic Plugin Requirements
+    - Create a folder to store your plugin files. This will be your plugin’s slug. It should be unique through the WP repo.
+    - Create a file that has the same slug as your folder
+    - Add plugin comments to the beginning of the file
+    - Display plugin in Plugins screen
+- Examples
+    - Output date in footer using wp_footer
+    - Output date at the end of the content with the_content
+    - Remove post title with the_title 
+    - Add text to footer of admin
+    - Add styles to login screen
+- Things to Think About
+    - Overall structure of the plugin
+    - How the data is stored
+    - Features for launch
+    - Features for tomorrow
+    - Updates
+    - Backwards compatibility
+    - How it will be distributed
+    - Look at other plugins and see how they do it
+- Resources
+    - Professional WordPress Plugin Development http://www.wrox.com/WileyCDA/WroxTitle/Professional-WordPress-Plugin-Development.productCd-0470916222.html
+    - http://www.sitepoint.com/an-introduction-to-wordpress-plugin-development/
+    - https://pippinsplugins.com/series/
+    - https://premium.wpmudev.org/blog/wordpress-plugin-development-guide/
